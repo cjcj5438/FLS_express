@@ -3,14 +3,13 @@ const sha1 = require("sha1");
 const router = express.Router();
 const { dbclient, error } = require("../src/pg-db.js");
 const { v4: uuidv4 } = require("uuid");
+const db = new dbclient();
 
 router.use(function timeLog(req, res, next) {
   console.log("Time: ", Date.now());
   next();
 });
-// router.get("/a", function (req, res) {
-//   res.json({ name: 1 });
-// });
+
 router.post("/login", async function (req, res) {
   const p = req.body;
   if (!Object.prototype.hasOwnProperty.call(p, "name")) {
@@ -20,7 +19,6 @@ router.post("/login", async function (req, res) {
     return derror(b, -1, "密码不存在");
   }
   let sql1 = `SELECT * FROM public.system_user WHERE user_login='${p.name}'`;
-  let db = dbclient;
   if (!(await db.exec(sql1))) {
     return error(b, 100, db.lastErrorText());
   }
