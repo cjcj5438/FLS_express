@@ -28,8 +28,9 @@ class dbclient {
     let bok = 0;
     db.query(sql, (err, res) => {
       this.sql = sql;
+      console.log("正确SQL:", sql);
       if (err) {
-        console.log("SQL:", sql);
+        console.log("错误SQL:", sql);
         bok = 1;
         this.lasterror = err.message;
         return;

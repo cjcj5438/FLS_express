@@ -8,14 +8,31 @@ const dbs = require("./src/pg-db.js");
 const { readcache } = require("./src/utils");
 const indexRouter = require("./fls/index");
 const userRouter = require("./fls/user");
-const port = 8888;
+
 const { b } = require("./src/returnFormat.js");
-const flsPath = "I:/Code/FLS_Web/Web2/fls";
+console.log(process.env.PORT, process.env.FLS_PATH);
 const regex = /\/fls2\/project(\/.*)/;
 const { resultMiddleware } = require("./src/middleware/resultMiddleware.js");
-
+const staticPath = path.join(__dirname, "dist");
+// 接口路径.
+const port = process.env.PORT || 8888;
+const flsPath = process.env.FLS_PATH || "I:/Code/FLS_Web/Web2/fls";
 // 静态资源服务器
 app.use(express.static("public"));
+// 将静态文件目录作为中间件路由
+app.use("/fls2", express.static(staticPath));
+
+// 配置 historyApiFallback 选项
+app.use(
+  express.static(staticPath, {
+    index: "index.html",
+    setHeaders: (res, path) => {
+      if (path.endsWith("index.html")) {
+        res.setHeader("Cache-Control", "no-cache");
+      }
+    },
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(resultMiddleware);
