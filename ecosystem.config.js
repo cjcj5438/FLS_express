@@ -10,7 +10,7 @@ module.exports = {
       watch: true,
       env_development: {
         PORT: 8888,
-        FLS_PATH: "I:/Code/FLS_Web/Web2/fls",
+        FLS_PATH: "D:/chenjing/Web2/fls",
         NODE_ENV: "development",
       },
       env_production: {

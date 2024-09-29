@@ -10,13 +10,16 @@ const indexRouter = require("./fls/index");
 const userRouter = require("./fls/user");
 
 const { b } = require("./src/returnFormat.js");
-console.log(process.env.PORT, process.env.FLS_PATH);
+console.log('当前运行环境:',process.env.PORT, process.env.FLS_PATH);
 const regex = /\/fls2\/project(\/.*)/;
 const { resultMiddleware } = require("./src/middleware/resultMiddleware.js");
 const staticPath = path.join(__dirname, "dist");
 // 接口路径.
 const port = process.env.PORT || 8888;
+// I:\tyjk\fls\common\map\oht_map.fls
+// const flsPath = process.env.FLS_PATH || "I:/tyjk/fls";
 const flsPath = process.env.FLS_PATH || "I:/Code/FLS_Web/Web2/fls";
+// const flsPath = process.env.FLS_PATH || "D:/chenjing/Web2/fls";
 // 静态资源服务器
 app.use(express.static("public"));
 // 将静态文件目录作为中间件路由
@@ -36,6 +39,9 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(resultMiddleware);
+
+
+
 app.all("/fls2/project/*.fls", (req, res) => {
   const flsFile = req.path.match(regex)[1]; // 获取请求的文件名
   const db = new dbs.dbclient();
